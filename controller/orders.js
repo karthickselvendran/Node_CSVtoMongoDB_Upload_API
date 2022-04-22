@@ -15,8 +15,7 @@ router.post('/createOrder', async (req, res) => {
             customerName,
             mobileNumber,
             productId,
-            productQuantity,
-            status: true
+            productQuantity
         })
         await order.save()
         return res.status(200).json({
@@ -63,8 +62,7 @@ router.put('/cancelOrder/:id', async (req, res) => {
 })
 
 router.get('/getOrders', async (req, res) => {
-    const { orderId = "", customerName = "", mobileNumber = "", sort = "asc" } = req.query;
-    console.log(orderId, customerName, mobileNumber)
+    const { orderId = "", customerName = "", mobileNumber = "", startTime = "", endTime = "", sort = "asc" } = req.query;
     let searchCondtions = [];
     let filterConditions = [];
 
@@ -77,10 +75,12 @@ router.get('/getOrders', async (req, res) => {
     if (mobileNumber) {
         searchCondtions.push({ mobileNumber })
     }
+    if (startTime && endTime) {
+        searchCondtions.push({ date: { $gte: startTime, $lt: endTime } })
+    }
     if (sort) {
         filterConditions.push({ createdAt: sort === "desc" ? "desc" : "asc" })
     }
-    console.log(...searchCondtions)
     try {
         const orders = await Orders.find(...searchCondtions).sort(...filterConditions);
         return res.status(200).json({

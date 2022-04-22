@@ -19,8 +19,13 @@ const orderSchema = new mongoose.Schema({
         type: Number,
         default: 1
     },
+    date: {
+        type: Number,
+        default: Date.now()
+    },
     status: {
-        type: Boolean
+        type: Boolean,
+        default: true
     }
 },
     {
