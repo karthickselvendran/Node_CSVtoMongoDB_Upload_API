@@ -6,13 +6,13 @@ const { jwtConstants } = require('../common/constants');
 
 const signup = async (req, res) => {
     try {
-        const { username, email, password } = req.body;
+        const { customerName, email, mobileNumber, password } = req.body;
 
-        let usernameExists = await Users.findOne({ username });
-        if (usernameExists) {
+        let customerNameExists = await Users.findOne({ customerName });
+        if (customerNameExists) {
             return res.json({
                 status: 400,
-                message: 'Username Already Exists!'
+                message: 'Customer Name Already Exists!'
             })
         }
         let emailExists = await Users.findOneAndDelete({ email });

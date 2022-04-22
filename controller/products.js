@@ -26,14 +26,14 @@ router.post('/csv', upload.single('file'), async function (req, res) {
             array.push(row);
         })
         .on('end', async () => {
-            console.log(array)
+            // console.log(array)
             let sucessTotal = 0;
             let updateResult = [];
             for (let i = 0; i < array.length; i++) {
                 if (
-                    !array[i].name ||
-                    !array[i].type ||
-                    !array[i].price
+                    !array[i].productName ||
+                    !array[i].productType ||
+                    !array[i].productPrice
                 ) {
                     updateResult.push({
                         status: 0,
@@ -42,7 +42,7 @@ router.post('/csv', upload.single('file'), async function (req, res) {
                 }
                 else {
                     try {
-                        product = products.find(el => el.name === array[i].name)
+                        product = products.find(el => el.productName === array[i].productName)
                         if (!product) {
                             const productDetails = new Products({ ...array[i] });
                             await productDetails.save()
